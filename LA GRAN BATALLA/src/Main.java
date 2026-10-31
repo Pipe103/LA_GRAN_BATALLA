@@ -10,6 +10,7 @@ public class Main {
         char opcionTipoLogin = '0';
         String correoElectronicoIngresado = " ";
         String contrasenaIngresada = " ";
+        boolean inicioDeSeccion = true;
 
         // aqui se guardan las cuentas creadas por clientes
         int capacidadCreacionCuentasCliente = 0;
@@ -56,6 +57,36 @@ public class Main {
                         scanner.nextLine();
                         switch (opcionTipoLogin) {
                             case '1':
+                                do {
+                                    System.out.println("ingresa tu usuario");
+                                    correoElectronicoIngresado = scanner.nextLine();
+
+                                    if (correoElectronicoIngresado.trim().isEmpty()) {
+                                        System.out.println("este campo no puede estar vacio");
+                                    } else {
+                                        do {
+                                            System.out.println("ingresa tu contraseña");
+                                            contrasenaIngresada = scanner.nextLine();
+
+                                            if (contrasenaIngresada.trim().isEmpty()) {
+                                                System.out.println("este campo no puede estar vacio");
+                                            } else {
+                                                for (int i = 0; i < correosElectronicosClientes.length; i++) {
+                                                    if (correosElectronicosClientes[i].equals(correoElectronicoIngresado) && contrasenasCliente[i].equals(contrasenaIngresada)) {
+                                                        inicioDeSeccion = false;
+                                                        break;
+                                                    }
+                                                }
+                                                if (inicioDeSeccion == false) {
+                                                    System.out.println("inicio de seccion exitoso");
+                                                } else {
+                                                    System.out.println("correo o contraseña incorrecta");
+                                                }
+                                            }
+                                        } while (contrasenaIngresada.trim().isEmpty());
+
+                                    }
+                                } while (inicioDeSeccion != false);
                                 break;
                             case '2':
                                 do {
@@ -112,6 +143,39 @@ public class Main {
                         scanner.nextLine();
                         switch (opcionTipoLogin) {
                             case '1':
+
+                                do {
+                                    System.out.println("Ingresa tu usuario");
+                                    correoElectronicoIngresado = scanner.nextLine();
+
+                                    if (correoElectronicoIngresado.trim().isEmpty()) {
+                                        System.out.println("Este campo no puede estar vacio");
+                                    } else {
+                                        do {
+                                            System.out.println("Ingresa tu contraseña");
+                                            contrasenaIngresada = scanner.nextLine();
+
+                                            if (contrasenaIngresada.trim().isEmpty()) {
+                                                System.out.println("Este campo no puede estar vacio");
+                                            } else {
+                                                for (int i = 0; i < correosElectronicosBarbero.length; i++) {
+                                                    if (correosElectronicosBarbero[i].equals(correoElectronicoIngresado)
+                                                            && contrasenasBarbero[i].equals(contrasenaIngresada)) {
+                                                        inicioDeSeccion = false;
+                                                        break;
+                                                    }
+                                                }
+
+                                                if (inicioDeSeccion == false) {
+                                                    System.out.println("Inicio de sesion exitoso");
+                                                } else {
+                                                    System.out.println("Correo o contraseña incorrectos");
+                                                }
+                                            }
+                                        } while (contrasenaIngresada.trim().isEmpty());
+                                    }
+                                } while (inicioDeSeccion != false);
+
                                 break;
                             case '2':
                                 do {
@@ -169,6 +233,40 @@ public class Main {
                         scanner.nextLine();
                         switch (opcionTipoLogin) {
                             case '1':
+
+                                do {
+                                    System.out.println("Ingresa tu usuario");
+                                    correoElectronicoIngresado = scanner.nextLine();
+
+                                    if (correoElectronicoIngresado.trim().isEmpty()) {
+                                        System.out.println("Este campo no puede estar vacio");
+                                    } else {
+                                        do {
+                                            System.out.println("Ingresa tu contraseña");
+                                            contrasenaIngresada = scanner.nextLine();
+
+                                            if (contrasenaIngresada.trim().isEmpty()) {
+                                                System.out.println("Este campo no puede estar vacio");
+                                            } else {
+                                                for (int i = 0; i < correosElectronicosAdmnistrador.length; i++) {
+                                                    if (correosElectronicosAdmnistrador[i].equals(correoElectronicoIngresado)
+                                                            && contrasenasAdmnistrador[i].equals(contrasenaIngresada)) {
+
+                                                        inicioDeSeccion = false;
+                                                        break;
+                                                    }
+                                                }
+
+                                                if (inicioDeSeccion == false) {
+                                                    System.out.println("Inicio de sesion exitoso");
+                                                } else {
+                                                    System.out.println("Correo o contraseña incorrectos");
+                                                }
+                                            }
+                                        } while (contrasenaIngresada.trim().isEmpty());
+                                    }
+                                } while (inicioDeSeccion != false);
+
                                 break;
                             case '2':
                                 do {
@@ -217,34 +315,5 @@ public class Main {
                     System.out.println("Opción invalida.");
             }
         } while (opcionTipoUsuario != '4');
-
-        System.out.println("\n========== CUENTAS DE CLIENTES ==========");
-
-        for (int i = 0; i < correosElectronicosClientes.length; i++) {
-            System.out.println("Índice: " + i);
-            System.out.println("Correo: " + correosElectronicosClientes[i]);
-            System.out.println("Contraseña: " + contrasenasCliente[i]);
-            System.out.println("--------------------------------");
-        }
-
-
-        System.out.println("\n========== CUENTAS DE BARBEROS ==========");
-
-        for (int i = 0; i < correosElectronicosBarbero.length; i++) {
-            System.out.println("Índice: " + i);
-            System.out.println("Correo: " + correosElectronicosBarbero[i]);
-            System.out.println("Contraseña: " + contrasenasBarbero[i]);
-            System.out.println("--------------------------------");
-        }
-
-
-        System.out.println("\n========== CUENTAS DE ADMINISTRADORES ==========");
-
-        for (int i = 0; i < correosElectronicosAdmnistrador.length; i++) {
-            System.out.println("Índice: " + i);
-            System.out.println("Correo: " + correosElectronicosAdmnistrador[i]);
-            System.out.println("Contraseña: " + contrasenasAdmnistrador[i]);
-            System.out.println("--------------------------------");
-        }
     }
 }
