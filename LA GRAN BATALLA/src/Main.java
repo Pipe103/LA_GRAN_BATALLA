@@ -11,6 +11,9 @@ public class Main {
         String correoElectronicoIngresado = " ";
         String contrasenaIngresada = " ";
         boolean inicioDeSeccion = true;
+        char opcionDeGetion = '0';
+        char opcionDeGetionBarbero = '0';
+        char opcionDeGetionCliente = '0';
 
         // aqui se guardan las cuentas creadas por clientes
         int capacidadCreacionCuentasCliente = 0;
@@ -87,6 +90,7 @@ public class Main {
 
                                     }
                                 } while (inicioDeSeccion != false);
+
                                 break;
                             case '2':
                                 do {
@@ -267,6 +271,95 @@ public class Main {
                                     }
                                 } while (inicioDeSeccion != false);
 
+                                do {
+                                    System.out.println("""
+                                            ===== MENÚ ADMINISTRADOR =====
+                                            1. Gestionar barberos
+                                            2. Gestionar clientes
+                                            3. Volver al menú anterior
+                                            """);
+                                    opcionDeGetion = scanner.next().charAt(0);
+                                    switch (opcionDeGetion) {
+                                        case '1':
+                                            do {
+                                                System.out.println("""
+                                                        ===== GESTIÓN DE BARBEROS =====
+                                                        1. Registrar barbero
+                                                        2. Mostrar barberos registrados
+                                                        3. Buscar barbero
+                                                        4. Actualizar información del barbero
+                                                        5. Eliminar barbero
+                                                        6. Volver al menú administrador
+                                                        """);
+                                                opcionDeGetionBarbero = scanner.next().charAt(0);
+                                                switch (opcionDeGetionBarbero) {
+                                                    case '1':
+                                                        System.out.println("Registrar barbero");
+                                                        break;
+                                                    case '2':
+                                                        System.out.println("Mostrar barberos registrados");
+                                                        break;
+                                                    case '3':
+                                                        System.out.println("Buscar barbero");
+                                                        break;
+                                                    case '4':
+                                                        System.out.println("Actualizar información del barbero");
+                                                        break;
+                                                    case '5':
+                                                        System.out.println("Eliminar barbero");
+                                                        break;
+                                                    case '6':
+                                                        System.out.println("Volver al menú administrador");
+                                                        break;
+                                                    default:
+                                                        System.out.println("Opción no válida");
+                                                }
+
+                                            } while (opcionDeGetionBarbero != '6');
+                                            break;
+                                        case '2':
+                                            do {
+                                                System.out.println("""
+                                                        ===== GESTIÓN DE CLIENTES =====
+                                                        1. Registrar cliente
+                                                        2. Mostrar clientes registrados
+                                                        3. Buscar cliente
+                                                        4. Actualizar información del cliente
+                                                        5. Eliminar cliente
+                                                        6. Volver al menú administrador
+                                                        """);
+                                                opcionDeGetionCliente = scanner.next().charAt(0);
+                                                switch (opcionDeGetionCliente) {
+                                                    case '1':
+                                                        System.out.println("Registrar cliente");
+                                                        break;
+                                                    case '2':
+                                                        System.out.println("Mostrar clientes registrados");
+                                                        break;
+                                                    case '3':
+                                                        System.out.println("Buscar cliente");
+                                                        break;
+                                                    case '4':
+                                                        System.out.println("Actualizar información del cliente");
+                                                        break;
+                                                    case '5':
+                                                        System.out.println("Eliminar cliente");
+                                                        break;
+                                                    case '6':
+                                                        System.out.println("Volver al menú administrador");
+                                                        break;
+                                                    default:
+                                                        System.out.println("Opción no válida");
+                                                }
+                                            } while (opcionDeGetionCliente != '6');
+                                            break;
+                                        case '3':
+                                            break;
+                                        default:
+                                            System.out.println("opcion invalida");
+                                            break;
+                                    }
+                                } while (opcionDeGetion != '3');
                                 break;
                             case '2':
                                 do {
