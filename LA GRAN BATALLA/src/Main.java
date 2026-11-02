@@ -1,4 +1,5 @@
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -20,6 +21,9 @@ public class Main {
         boolean salirGestionPerfil = true;
         boolean correoExiste = false;
         int posicionCitaCancelar = -1;
+        int posicionBarberoSesion = -1;
+        char opcionGestionPerfil = '0';
+        char opcionGestionCitasBarbero = '0';
 
 
         // aqui se guardan las cuentas creadas por clientes
@@ -32,7 +36,13 @@ public class Main {
         String[] contrasenasCliente = new String[capacidadCreacionCuentasCliente];
 
         // aqui se guardan las cuentas de barberos
-
+        String fechaNueva = "";
+        String horaNueva = "";
+        int posicionCitaEliminar = -1;
+        char opcionActualizarCita = '0';
+        int contadorCitasEncontradas = 0;
+        int posicionCitaActualizar = -1;
+        char opcionMenuBarbero = '0';
         int capacidadCreacionCuentasBarbero = 0;
         String[] correosElectronicosBarbero = new String[capacidadCreacionCuentasBarbero];
         String[] contrasenasBarbero = new String[capacidadCreacionCuentasBarbero];
@@ -46,7 +56,6 @@ public class Main {
 
         //aqui se guardan la informaciiion sobre las citas
         boolean horarioOcupadoActualizar = false;
-        int posicionCitaActualizar = -1;
         int capacidadCreacionCitas = 0;
         String[] identificadoresCitas = new String[capacidadCreacionCitas];
         String[] numerosCedulaClientesCitas = new String[capacidadCreacionCitas];
@@ -372,6 +381,7 @@ public class Main {
 
                                                             } while (horaCitaIngresada.trim().isEmpty());
 
+                                                            horarioOcupado = false;
                                                             for (int i = 0; i < capacidadCreacionCitas; i++) {
 
                                                                 if (numerosIdentificadoresBarberosCitas[i].equals(numeroIdentificadorBarberoSeleccionado)
@@ -413,7 +423,6 @@ public class Main {
                                                                         estadosCitas, capacidadCreacionCitas);
 
 
-                                                                ///////////////////////////////
                                                                 identificadoresCitas[posicionCita] = "CITA-" + capacidadCreacionCitas;
 
                                                                 numerosCedulaClientesCitas[posicionCita] =
@@ -831,7 +840,7 @@ public class Main {
                                                     if (correosElectronicosBarbero[i].equals(correoElectronicoIngresado)
                                                             && contrasenasBarbero[i].equals(contrasenaIngresada)) {
                                                         inicioDeSeccion = false;
-                                                        posicionClienteSesion = i;
+                                                        posicionBarberoSesion = i;
                                                         break;
                                                     }
                                                 }
@@ -845,6 +854,473 @@ public class Main {
                                         } while (contrasenaIngresada.trim().isEmpty());
                                     }
                                 } while (inicioDeSeccion != false);
+
+                                do {
+                                    System.out.println("\n===== MENÚ BARBERO =====");
+                                    System.out.println("1. Gestion de perfil");
+                                    System.out.println("2. Gestionar mis citas");
+                                    System.out.println("3. Cerrar sesión");
+
+                                    opcionMenuBarbero = scanner.next().charAt(0);
+                                    ///////
+                                    switch (opcionMenuBarbero) {
+
+                                        case '1':
+                                            do {
+                                                System.out.println("\n===== GESTIÓN DE MI PERFIL =====");
+                                                System.out.println("1. Mostrar información de mi perfil");
+                                                System.out.println("2. Actualizar nombre");
+                                                System.out.println("3. Actualizar correo electrónico");
+                                                System.out.println("4. Actualizar contraseña");
+                                                System.out.println("5. Actualizar toda mi información");
+                                                System.out.println("6. Volver al menú de barbero");
+                                                System.out.println("Selecciona una opción");
+
+                                                opcionGestionPerfil = scanner.next().charAt(0);
+                                                scanner.nextLine();
+
+                                                switch (opcionGestionPerfil) {
+
+                                                    case '1':
+                                                        System.out.println("\n===== INFORMACIÓN DE MI PERFIL =====");
+
+                                                        System.out.println("Nombre: " + nombresBarberos[posicionBarberoSesion]);
+                                                        System.out.println("Correo electrónico: " + correosElectronicosBarbero[posicionBarberoSesion]);
+                                                        System.out.println("Número identificador: " + numerosIdentificadoresBarberos[posicionBarberoSesion]);
+                                                        break;
+                                                    case '2':
+                                                        System.out.println("\n===== ACTUALIZAR NOMBRE =====");
+
+                                                        do {
+                                                            System.out.println("Ingresa tu nuevo nombre");
+                                                            nombreIngresado = scanner.nextLine();
+
+                                                            if (nombreIngresado.trim().isEmpty()) {
+                                                                System.out.println("Este campo no puede estar vacio");
+                                                            }
+
+                                                        } while (nombreIngresado.trim().isEmpty());
+
+                                                        nombresBarberos[posicionBarberoSesion] = nombreIngresado;
+
+                                                        System.out.println("Tu nombre fue actualizado con exito");
+
+                                                        break;
+                                                    case '3':
+                                                        System.out.println("\n===== ACTUALIZAR CORREO ELECTRÓNICO =====");
+                                                        do {
+                                                            System.out.println("Ingresa tu nuevo correo");
+                                                            correoElectronicoIngresado = scanner.nextLine();
+
+                                                            if (correoElectronicoIngresado.trim().isEmpty()) {
+                                                                System.out.println("Este campo no puede estar vacio");
+                                                            }
+
+                                                        } while (correoElectronicoIngresado.trim().isEmpty());
+
+                                                        correosElectronicosBarbero[posicionBarberoSesion] = correoElectronicoIngresado;
+
+                                                        System.out.println("Tu correo electronico fue actualizado con exito");
+                                                        break;
+
+                                                    case '4':
+                                                        System.out.println("\n===== ACTUALIZAR CONTRASEÑA =====");
+                                                        do {
+                                                            System.out.println("ingresa tu nueva contraseña");
+                                                            contrasenaIngresada = scanner.nextLine();
+
+                                                            if (contrasenaIngresada.trim().isEmpty()) {
+                                                                System.out.println("este campo no puede estar vacio");
+                                                            } else {
+                                                                contrasenasBarbero[posicionBarberoSesion] = contrasenaIngresada;
+                                                                System.out.println("contraseña actualizada con exito");
+                                                            }
+                                                        } while (contrasenaIngresada.trim().isEmpty());
+                                                        break;
+
+                                                    case '5':
+                                                        System.out.println("\n===== ACTUALIZAR TODA MI INFORMACIÓN =====");
+
+                                                        do {
+                                                            System.out.println("Ingresa tu nuevo nombre");
+                                                            nombreIngresado = scanner.nextLine();
+
+                                                            if (nombreIngresado.trim().isEmpty()) {
+                                                                System.out.println("Este campo no puede estar vacio");
+                                                            }
+
+                                                        } while (nombreIngresado.trim().isEmpty());
+
+                                                        do {
+                                                            System.out.println("Ingresa tu nuevo correo electronico");
+                                                            correoElectronicoIngresado = scanner.nextLine();
+
+                                                            if (correoElectronicoIngresado.trim().isEmpty()) {
+                                                                System.out.println("Este campo no puede estar vacio");
+                                                            }
+
+                                                        } while (correoElectronicoIngresado.trim().isEmpty());
+
+                                                        do {
+                                                            System.out.println("Ingresa tu nueva contraseña");
+                                                            contrasenaIngresada = scanner.nextLine();
+
+                                                            if (contrasenaIngresada.trim().isEmpty()) {
+                                                                System.out.println("Este campo no puede estar vacio");
+                                                            }
+
+                                                        } while (contrasenaIngresada.trim().isEmpty());
+
+                                                        nombresBarberos[posicionBarberoSesion] = nombreIngresado;
+
+                                                        correosElectronicosBarbero[posicionBarberoSesion] = correoElectronicoIngresado;
+
+                                                        contrasenasBarbero[posicionBarberoSesion] = contrasenaIngresada;
+
+                                                        System.out.println("Toda tu información fue actualizada con exito");
+                                                        break;
+
+                                                    case '6':
+                                                        System.out.println("Volviendo al menú de barbero...");
+                                                        break;
+
+                                                    default:
+                                                        System.out.println("Opción no válida");
+                                                        break;
+                                                }
+
+                                            } while (opcionGestionPerfil != '6');
+                                            break;
+
+                                        case '2':
+                                            do {
+                                                System.out.println("\n===== GESTIÓN DE MIS CITAS =====");
+                                                System.out.println("1. Mostrar mis citas");
+                                                System.out.println("2. Buscar una cita");
+                                                System.out.println("3. Actualizar una cita");
+                                                System.out.println("4. Cancelar una cita");
+                                                System.out.println("5. Volver al menú de barbero");
+                                                System.out.println("Selecciona una opción");
+
+                                                opcionGestionCitasBarbero = scanner.next().charAt(0);
+                                                scanner.nextLine();
+                                                switch (opcionGestionCitasBarbero) {
+
+                                                    case '1':
+                                                        System.out.println("\n===== MIS CITAS =====");
+                                                        int contadorCitas = 0;
+
+                                                        for (int i = 0; i < identificadoresCitas.length; i++) {
+
+                                                            if (numerosIdentificadoresBarberosCitas[i].equals(
+                                                                    numerosIdentificadoresBarberos[posicionBarberoSesion])) {
+
+                                                                contadorCitas++;
+
+                                                                System.out.println("\nIdentificador de la cita: " + identificadoresCitas[i]);
+                                                                System.out.println("Cédula del cliente: " + numerosCedulaClientesCitas[i]);
+                                                                System.out.println("Servicio: " + serviciosCitas[i]);
+                                                                System.out.println("Fecha: " + fechasCitas[i]);
+                                                                System.out.println("Hora: " + horasCitas[i]);
+                                                                System.out.println("Estado: " + estadosCitas[i]);
+                                                            }
+                                                        }
+                                                        if (contadorCitas == 0) {
+                                                            System.out.println("No tienes citas registradas");
+                                                        }
+                                                        break;
+
+                                                    case '2':
+                                                        System.out.println("\n===== BUSCAR UNA CITA =====");
+
+                                                        do {
+                                                            System.out.println("Ingresa el identificador de la cita");
+                                                            identificadorCitaIngresado = scanner.nextLine();
+
+                                                            if (identificadorCitaIngresado.trim().isEmpty()) {
+                                                                System.out.println("Este campo no puede estar vacio");
+                                                            }
+
+                                                        } while (identificadorCitaIngresado.trim().isEmpty());
+
+                                                        for (int i = 0; i < identificadoresCitas.length; i++) {
+
+                                                            if (identificadoresCitas[i].equalsIgnoreCase(identificadorCitaIngresado)
+                                                                    && numerosIdentificadoresBarberosCitas[i].equals(
+                                                                    numerosIdentificadoresBarberos[posicionBarberoSesion])) {
+
+                                                                System.out.println("\n===== INFORMACIÓN DE LA CITA =====");
+                                                                System.out.println("Identificador de la cita: " + identificadoresCitas[i]);
+                                                                System.out.println("Cédula del cliente: " + numerosCedulaClientesCitas[i]);
+                                                                System.out.println("Servicio: " + serviciosCitas[i]);
+                                                                System.out.println("Fecha: " + fechasCitas[i]);
+                                                                System.out.println("Hora: " + horasCitas[i]);
+                                                                System.out.println("Estado: " + estadosCitas[i]);
+
+                                                                break;
+                                                            }
+
+                                                            if (i == identificadoresCitas.length - 1) {
+                                                                System.out.println("No se encontro ninguna cita con ese identificador");
+                                                            }
+                                                        }
+                                                        break;
+
+                                                    case '3':
+                                                        System.out.println("\n===== ACTUALIZAR UNA CITA =====");
+
+                                                        do {
+                                                            System.out.println("Ingresa el identificador de la cita que deseas actualizar");
+                                                            identificadorCitaIngresado = scanner.nextLine();
+
+                                                            if (identificadorCitaIngresado.trim().isEmpty()) {
+                                                                System.out.println("Este campo no puede estar vacio");
+                                                            }
+
+                                                        } while (identificadorCitaIngresado.trim().isEmpty());
+
+                                                        for (int i = 0; i < identificadoresCitas.length; i++) {
+
+                                                            if (identificadoresCitas[i].equalsIgnoreCase(identificadorCitaIngresado)
+                                                                    && numerosIdentificadoresBarberosCitas[i].equals(
+                                                                    numerosIdentificadoresBarberos[posicionBarberoSesion])) {
+
+                                                                contadorCitasEncontradas++;
+                                                                posicionCitaActualizar = i;
+                                                                break;
+                                                            }
+                                                        }
+
+                                                        if (contadorCitasEncontradas == 0) {
+                                                            System.out.println("No se encontro ninguna cita con ese identificador");
+                                                        } else {
+                                                            do {
+                                                                System.out.println("\n===== OPCIONES DE ACTUALIZACIÓN =====");
+                                                                System.out.println("1. Actualizar fecha");
+                                                                System.out.println("2. Actualizar hora");
+                                                                System.out.println("3. Actualizar fecha y hora");
+                                                                System.out.println("4. Volver");
+                                                                System.out.println("Selecciona una opción");
+
+                                                                opcionActualizarCita = scanner.next().charAt(0);
+                                                                scanner.nextLine();
+
+                                                                switch (opcionActualizarCita) {
+
+                                                                    case '1': {
+                                                                        do {
+                                                                            System.out.println("Ingresa la nueva fecha");
+                                                                            fechaNueva = scanner.nextLine();
+
+                                                                            if (fechaNueva.trim().isEmpty()) {
+                                                                                System.out.println("Este campo no puede estar vacio");
+                                                                            }
+
+                                                                        } while (fechaNueva.trim().isEmpty());
+
+                                                                        horarioOcupadoActualizar = false;
+
+                                                                        for (int i = 0; i < identificadoresCitas.length; i++) {
+
+                                                                            if (i != posicionCitaActualizar
+                                                                                    && numerosIdentificadoresBarberosCitas[i].equals(
+                                                                                    numerosIdentificadoresBarberos[posicionBarberoSesion])
+                                                                                    && fechasCitas[i].equals(fechaNueva)
+                                                                                    && horasCitas[i].equals(horasCitas[posicionCitaActualizar])) {
+                                                                                horarioOcupadoActualizar = true;
+                                                                                break;
+                                                                            }
+                                                                        }
+
+                                                                        if (horarioOcupadoActualizar) {
+                                                                            System.out.println("Ya tienes otra cita registrada en esa fecha y hora");
+                                                                        } else {
+                                                                            fechasCitas[posicionCitaActualizar] = fechaNueva;
+                                                                            System.out.println("La fecha de la cita fue actualizada con exito");
+                                                                        }
+                                                                        break;
+                                                                    }
+
+                                                                    case '2': {
+                                                                        do {
+                                                                            System.out.println("Ingresa la nueva hora");
+                                                                            horaNueva = scanner.nextLine();
+
+                                                                            if (horaNueva.trim().isEmpty()) {
+                                                                                System.out.println("Este campo no puede estar vacio");
+                                                                            }
+
+                                                                        } while (horaNueva.trim().isEmpty());
+
+                                                                        horarioOcupadoActualizar = false;
+
+                                                                        for (int i = 0; i < identificadoresCitas.length; i++) {
+
+                                                                            if (i != posicionCitaActualizar
+                                                                                    && numerosIdentificadoresBarberosCitas[i].equals(
+                                                                                    numerosIdentificadoresBarberos[posicionBarberoSesion])
+                                                                                    && fechasCitas[i].equals(fechasCitas[posicionCitaActualizar])
+                                                                                    && horasCitas[i].equals(horaNueva)) {
+
+                                                                                horarioOcupadoActualizar = true;
+                                                                                break;
+                                                                            }
+                                                                        }
+
+                                                                        if (horarioOcupadoActualizar) {
+
+                                                                            System.out.println("Ya tienes otra cita registrada en esa fecha y hora");
+
+                                                                        } else {
+
+                                                                            horasCitas[posicionCitaActualizar] = horaNueva;
+
+                                                                            System.out.println("La hora de la cita fue actualizada con exito");
+                                                                        }
+                                                                        break;
+                                                                    }
+
+                                                                    case '3': {
+                                                                        do {
+                                                                            System.out.println("Ingresa la nueva fecha");
+                                                                            fechaNueva = scanner.nextLine();
+
+                                                                            if (fechaNueva.trim().isEmpty()) {
+                                                                                System.out.println("Este campo no puede estar vacio");
+                                                                            }
+
+                                                                        } while (fechaNueva.trim().isEmpty());
+
+                                                                        do {
+                                                                            System.out.println("Ingresa la nueva hora");
+                                                                            horaNueva = scanner.nextLine();
+
+                                                                            if (horaNueva.trim().isEmpty()) {
+                                                                                System.out.println("Este campo no puede estar vacio");
+                                                                            }
+
+                                                                        } while (horaNueva.trim().isEmpty());
+
+                                                                        horarioOcupadoActualizar = false;
+
+                                                                        for (int i = 0; i < identificadoresCitas.length; i++) {
+
+                                                                            if (i != posicionCitaActualizar
+                                                                                    && numerosIdentificadoresBarberosCitas[i].equals(
+                                                                                    numerosIdentificadoresBarberos[posicionBarberoSesion])
+                                                                                    && fechasCitas[i].equals(fechaNueva)
+                                                                                    && horasCitas[i].equals(horaNueva)) {
+
+                                                                                horarioOcupadoActualizar = true;
+                                                                                break;
+                                                                            }
+                                                                        }
+
+                                                                        if (horarioOcupadoActualizar) {
+
+                                                                            System.out.println("Ya tienes otra cita registrada en esa fecha y hora");
+
+                                                                        } else {
+
+                                                                            fechasCitas[posicionCitaActualizar] = fechaNueva;
+                                                                            horasCitas[posicionCitaActualizar] = horaNueva;
+
+                                                                            System.out.println("La fecha y hora de la cita fueron actualizadas con exito");
+                                                                        }
+                                                                        break;
+                                                                    }
+
+                                                                    case '4':
+                                                                        System.out.println("Volviendo al menú de gestión de citas...");
+                                                                        break;
+
+                                                                    default:
+                                                                        System.out.println("Opción no válida");
+                                                                        break;
+                                                                }
+
+                                                            } while (opcionActualizarCita != '4');
+
+                                                        }
+
+                                                        break;
+
+                                                    case '4':
+                                                        System.out.println("\n===== CANCELAR UNA CITA =====");
+
+                                                        do {
+                                                            System.out.println("Ingresa el identificador de la cita que deseas cancelar");
+                                                            identificadorCitaIngresado = scanner.nextLine();
+
+                                                            if (identificadorCitaIngresado.trim().isEmpty()) {
+                                                                System.out.println("Este campo no puede estar vacio");
+                                                            }
+
+                                                        } while (identificadorCitaIngresado.trim().isEmpty());
+
+                                                        for (int i = 0; i < identificadoresCitas.length; i++) {
+
+                                                            if (identificadoresCitas[i].equalsIgnoreCase(identificadorCitaIngresado)
+                                                                    && numerosIdentificadoresBarberosCitas[i].equals(
+                                                                    numerosIdentificadoresBarberos[posicionBarberoSesion])) {
+
+                                                                contadorCitasEncontradas++;
+                                                                posicionCitaEliminar = i;
+                                                                break;
+                                                            }
+                                                        }
+
+                                                        if (contadorCitasEncontradas == 0) {
+
+                                                            System.out.println("No se encontro ninguna cita con ese identificador");
+
+                                                        } else {
+
+                                                            for (int i = posicionCitaEliminar; i < identificadoresCitas.length - 1; i++) {
+
+                                                                identificadoresCitas[i] = identificadoresCitas[i + 1];
+                                                                numerosCedulaClientesCitas[i] = numerosCedulaClientesCitas[i + 1];
+                                                                numerosIdentificadoresBarberosCitas[i] = numerosIdentificadoresBarberosCitas[i + 1];
+                                                                serviciosCitas[i] = serviciosCitas[i + 1];
+                                                                fechasCitas[i] = fechasCitas[i + 1];
+                                                                horasCitas[i] = horasCitas[i + 1];
+                                                                estadosCitas[i] = estadosCitas[i + 1];
+                                                            }
+
+                                                            identificadoresCitas = Arrays.copyOf(identificadoresCitas, identificadoresCitas.length - 1);
+                                                            numerosCedulaClientesCitas = Arrays.copyOf(numerosCedulaClientesCitas, numerosCedulaClientesCitas.length - 1);
+                                                            numerosIdentificadoresBarberosCitas = Arrays.copyOf(numerosIdentificadoresBarberosCitas, numerosIdentificadoresBarberosCitas.length - 1);
+                                                            serviciosCitas = Arrays.copyOf(serviciosCitas, serviciosCitas.length - 1);
+                                                            fechasCitas = Arrays.copyOf(fechasCitas, fechasCitas.length - 1);
+                                                            horasCitas = Arrays.copyOf(horasCitas, horasCitas.length - 1);
+                                                            estadosCitas = Arrays.copyOf(estadosCitas, estadosCitas.length - 1);
+
+                                                            System.out.println("La cita fue cancelada con exito");
+                                                        }
+                                                        break;
+
+                                                    case '5':
+                                                        System.out.println("Volviendo al menú de barbero...");
+                                                        break;
+
+                                                    default:
+                                                        System.out.println("Opción no válida");
+                                                        break;
+                                                }
+
+                                            } while (opcionGestionCitasBarbero != '5');
+                                            break;
+
+                                        case '3':
+                                            System.out.println("Cerrando sesión...");
+                                            break;
+
+                                        default:
+                                            System.out.println("Opción no válida");
+                                            break;
+                                    }
+
+                                } while (opcionMenuBarbero!= '3');
 
                                 break;
                             case '2':
