@@ -17,6 +17,10 @@ public class Main {
         String numeroIdentificadorIngresado = " ";
         char opcionActualizar = '0';
         String nombreIngresado = "";
+        boolean salirGestionPerfil = true;
+        boolean correoExiste = false;
+        int posicionCitaCancelar = -1;
+
 
         // aqui se guardan las cuentas creadas por clientes
 
@@ -40,6 +44,46 @@ public class Main {
         String[] correosElectronicosAdmnistrador = new String[capacidadCreacionCuentasAdmnistrador];
         String[] contrasenasAdmnistrador = new String[capacidadCreacionCuentasAdmnistrador];
 
+        //aqui se guardan la informaciiion sobre las citas
+        boolean horarioOcupadoActualizar = false;
+        int posicionCitaActualizar = -1;
+        int capacidadCreacionCitas = 0;
+        String[] identificadoresCitas = new String[capacidadCreacionCitas];
+        String[] numerosCedulaClientesCitas = new String[capacidadCreacionCitas];
+        String[] numerosIdentificadoresBarberosCitas = new String[capacidadCreacionCitas];
+        String[] serviciosCitas = new String[capacidadCreacionCitas];
+        String[] fechasCitas = new String[capacidadCreacionCitas];
+        String[] horasCitas = new String[capacidadCreacionCitas];
+        String[] estadosCitas = new String[capacidadCreacionCitas];
+        char opcionMenuCliente = '0';
+        char opcionMiPerfil = '0';
+        char opcionGestionCitas = '0';
+        char opcionServicio = '0';
+        String opcionMenuClienteIngresada = "";
+        String opcionMiPerfilIngresada = "";
+        String opcionGestionCitasIngresada = "";
+        String opcionServicioIngresada = "";
+        String servicioIngresado = "";
+        String fechaCitaIngresada = "";
+        String horaCitaIngresada = "";
+        String identificadorCitaIngresado = "";
+        int posicionClienteSesion = -1;
+        int opcionBarbero = 0;
+        int posicionBarberoSeleccionado = -1;
+        String numeroIdentificadorBarberoSeleccionado = "";
+
+        boolean salirMenuCliente = true;
+        boolean salirMiPerfil = true;
+        boolean salirGestionCitas = true;
+
+        // aqui almacenamos los servicios
+        int capacidadServicios = 3;
+        boolean horarioOcupado = false;
+        String[] nombresServicios = {
+                "Corte de cabello",
+                "Arreglo de barba",
+                "Corte y barba"
+        };
         do {
             System.out.println("""
                     =========================
@@ -87,6 +131,7 @@ public class Main {
                                                 for (int i = 0; i < correosElectronicosClientes.length; i++) {
                                                     if (correosElectronicosClientes[i].equals(correoElectronicoIngresado) && contrasenasCliente[i].equals(contrasenaIngresada)) {
                                                         inicioDeSeccion = false;
+                                                        posicionClienteSesion = i;
                                                         break;
                                                     }
                                                 }
@@ -101,6 +146,583 @@ public class Main {
                                     }
                                 } while (inicioDeSeccion != false);
 
+                                do {
+                                    System.out.println("\n===== MENU PRINCIPAL CLIENTE =====");
+                                    System.out.println("1. Gestion de perfil");
+                                    System.out.println("2. Gestion de citas");
+                                    System.out.println("3. Cerrar sesion");
+                                    opcionMenuCliente = scanner.next().charAt(0);
+
+                                    switch (opcionMenuCliente) {
+                                        case '1':
+                                            do {
+
+                                                System.out.println("\n===== GESTION DE PERFIL =====");
+                                                System.out.println("1. Ver informacion del perfil");
+                                                System.out.println("2. Cambiar nombre");
+                                                System.out.println("3. Cambiar correo electronico");
+                                                System.out.println("4. Cambiar contraseña");
+                                                System.out.println("5. Volver al menu principal");
+                                                opcionMiPerfil = scanner.next().charAt(0);
+                                                scanner.nextLine();
+                                                switch (opcionMiPerfil) {
+
+                                                    case '1':
+                                                        System.out.println("\n===== INFORMACION DE MI PERFIL =====");
+                                                        System.out.println("Nombre: " + nombresClientes[posicionClienteSesion]);
+                                                        System.out.println("Cedula: " + numerosCedulaClientes[posicionClienteSesion]);
+                                                        System.out.println("Correo electronico: " + correosElectronicosClientes[posicionClienteSesion]);
+                                                        break;
+
+                                                    case '2':
+                                                        do {
+                                                            System.out.println("\n===== CAMBIAR NOMBRE =====");
+                                                            System.out.println("Ingresa tu nuevo nombre:");
+                                                            nombreIngresado = scanner.nextLine();
+
+                                                            if (nombreIngresado.trim().isEmpty()) {
+
+                                                                System.out.println("El nombre no puede estar vacio");
+
+                                                            } else {
+
+                                                                nombresClientes[posicionClienteSesion] = nombreIngresado;
+
+                                                                System.out.println("Nombre actualizado exitosamente");
+
+                                                            }
+
+                                                        } while (nombreIngresado.trim().isEmpty());
+                                                        break;
+
+                                                    case '3':
+                                                        do {
+
+                                                            System.out.println("\n===== CAMBIAR CORREO ELECTRONICO =====");
+                                                            System.out.println("Ingresa tu nuevo correo electronico:");
+                                                            correoElectronicoIngresado = scanner.nextLine();
+
+                                                            if (correoElectronicoIngresado.trim().isEmpty()) {
+
+                                                                System.out.println("El correo electronico no puede estar vacio");
+
+                                                            } else {
+
+
+                                                                for (int i = 0; i < correosElectronicosClientes.length; i++) {
+
+                                                                    if (i != posicionClienteSesion
+                                                                            && correosElectronicosClientes[i].equals(correoElectronicoIngresado)) {
+
+                                                                        correoExiste = true;
+                                                                        break;
+                                                                    }
+                                                                }
+
+                                                                if (correoExiste == true) {
+
+                                                                    System.out.println("Este correo electronico ya se encuentra registrado");
+
+                                                                } else {
+
+                                                                    correosElectronicosClientes[posicionClienteSesion] = correoElectronicoIngresado;
+
+                                                                    System.out.println("Correo electronico actualizado exitosamente");
+                                                                }
+                                                            }
+
+                                                        } while (correoElectronicoIngresado.trim().isEmpty()
+                                                                || correoExiste == true);
+                                                        break;
+                                                    case '4':
+                                                        do {
+                                                            System.out.println("\n===== CAMBIAR CONTRASEÑA =====");
+                                                            System.out.println("Ingresa tu nueva contraseña:");
+                                                            contrasenaIngresada = scanner.nextLine();
+
+                                                            if (contrasenaIngresada.trim().isEmpty()) {
+                                                                System.out.println("La contraseña no puede estar vacia");
+                                                            } else if (contrasenaIngresada.equals(
+                                                                    contrasenasCliente[posicionClienteSesion])) {
+                                                                System.out.println("La nueva contraseña no puede ser igual a la anterior");
+                                                            } else {
+                                                                contrasenasCliente[posicionClienteSesion] = contrasenaIngresada;
+                                                                System.out.println("Contraseña actualizada exitosamente");
+                                                            }
+
+                                                        } while (contrasenaIngresada.trim().isEmpty()
+                                                                || contrasenaIngresada.equals(contrasenasCliente[posicionClienteSesion]));
+                                                        break;
+                                                    case '5':
+                                                        break;
+                                                    default:
+                                                        System.out.println("Opcion no valida");
+                                                        break;
+                                                }
+                                            } while (opcionMiPerfil != '5');
+                                            break;
+                                        case '2':
+                                            do {
+                                                System.out.println("\n===== GESTION DE CITAS =====");
+                                                System.out.println("1. Registrar cita");
+                                                System.out.println("2. Mostrar mis citas");
+                                                System.out.println("3. Actualizar cita");
+                                                System.out.println("4. Cancelar cita");
+                                                System.out.println("5. Volver al menu principal");
+
+                                                System.out.println("Selecciona una opcion:");
+                                                opcionGestionCitas = scanner.next().charAt(0);
+                                                scanner.nextLine();
+
+                                                switch (opcionGestionCitas) {
+
+                                                    case '1':
+                                                        do {
+                                                            System.out.println("\n===== SELECCIONAR SERVICIO =====");
+                                                            for (int i = 0; i < nombresServicios.length; i++) {
+                                                                System.out.println((i + 1) + ". " + nombresServicios[i]);
+                                                            }
+                                                            opcionServicio = scanner.next().charAt(0);
+
+                                                            switch (opcionServicio) {
+                                                                case '1':
+                                                                    servicioIngresado = nombresServicios[0];
+                                                                    break;
+
+                                                                case '2':
+                                                                    servicioIngresado = nombresServicios[1];
+                                                                    break;
+
+                                                                case '3':
+                                                                    servicioIngresado = nombresServicios[2];
+                                                                    break;
+
+                                                                default:
+                                                                    System.out.println("Opcion no valida");
+                                                                    break;
+                                                            }
+
+                                                        } while (opcionServicio != '1'
+                                                                && opcionServicio != '2'
+                                                                && opcionServicio != '3');
+
+                                                        if (capacidadCreacionCuentasBarbero == 0) {
+
+                                                            System.out.println("No hay barberos registrados. No es posible registrar una cita.");
+
+                                                        } else {
+
+                                                            do {
+
+                                                                System.out.println("\n===== SELECCIONAR BARBERO =====");
+
+                                                                for (int i = 0; i < capacidadCreacionCuentasBarbero; i++) {
+
+                                                                    System.out.println((i + 1) + ". " + nombresBarberos[i]
+                                                                            + " - ID: " + numerosIdentificadoresBarberos[i]);
+
+                                                                }
+
+                                                                System.out.println("Selecciona un barbero:");
+
+                                                                opcionBarbero = scanner.nextInt();
+                                                                scanner.nextLine();
+
+                                                                if (opcionBarbero < 1 || opcionBarbero > capacidadCreacionCuentasBarbero) {
+
+                                                                    System.out.println("Opcion no valida");
+
+                                                                } else {
+
+                                                                    posicionBarberoSeleccionado = opcionBarbero - 1;
+
+                                                                    numeroIdentificadorBarberoSeleccionado =
+                                                                            numerosIdentificadoresBarberos[posicionBarberoSeleccionado];
+
+                                                                    System.out.println("Barbero seleccionado: "
+                                                                            + nombresBarberos[posicionBarberoSeleccionado]);
+                                                                }
+
+                                                            } while (opcionBarbero < 1 || opcionBarbero > capacidadCreacionCuentasBarbero);
+
+                                                            do {
+
+                                                                System.out.println("\n===== FECHA DE LA CITA =====");
+                                                                System.out.println("Ingresa la fecha de la cita (DD/MM/AAAA):");
+
+                                                                fechaCitaIngresada = scanner.nextLine();
+
+                                                                if (fechaCitaIngresada.trim().isEmpty()) {
+                                                                    System.out.println("La fecha no puede estar vacia");
+                                                                }
+
+                                                            } while (fechaCitaIngresada.trim().isEmpty());
+                                                            do {
+
+                                                                System.out.println("\n===== HORA DE LA CITA =====");
+                                                                System.out.println("Ingresa la hora de la cita (HH:MM):");
+
+                                                                horaCitaIngresada = scanner.nextLine();
+
+                                                                if (horaCitaIngresada.trim().isEmpty()) {
+
+                                                                    System.out.println("La hora no puede estar vacia");
+
+                                                                }
+
+                                                            } while (horaCitaIngresada.trim().isEmpty());
+
+                                                            for (int i = 0; i < capacidadCreacionCitas; i++) {
+
+                                                                if (numerosIdentificadoresBarberosCitas[i].equals(numeroIdentificadorBarberoSeleccionado)
+                                                                        && fechasCitas[i].equals(fechaCitaIngresada)
+                                                                        && horasCitas[i].equals(horaCitaIngresada)
+                                                                        && !estadosCitas[i].equals("Cancelada")) {
+
+                                                                    horarioOcupado = true;
+                                                                    break;
+                                                                }
+                                                            }
+
+                                                            if (horarioOcupado == true) {
+
+                                                                System.out.println("El barbero ya tiene una cita en esa fecha y hora.");
+
+                                                            } else {
+                                                                capacidadCreacionCitas++;
+                                                                int posicionCita = capacidadCreacionCitas - 1;
+                                                                identificadoresCitas = java.util.Arrays.copyOf(
+                                                                        identificadoresCitas, capacidadCreacionCitas);
+
+                                                                numerosCedulaClientesCitas = java.util.Arrays.copyOf(
+                                                                        numerosCedulaClientesCitas, capacidadCreacionCitas);
+
+                                                                numerosIdentificadoresBarberosCitas = java.util.Arrays.copyOf(
+                                                                        numerosIdentificadoresBarberosCitas, capacidadCreacionCitas);
+
+                                                                serviciosCitas = java.util.Arrays.copyOf(
+                                                                        serviciosCitas, capacidadCreacionCitas);
+
+                                                                fechasCitas = java.util.Arrays.copyOf(
+                                                                        fechasCitas, capacidadCreacionCitas);
+
+                                                                horasCitas = java.util.Arrays.copyOf(
+                                                                        horasCitas, capacidadCreacionCitas);
+
+                                                                estadosCitas = java.util.Arrays.copyOf(
+                                                                        estadosCitas, capacidadCreacionCitas);
+
+
+                                                                ///////////////////////////////
+                                                                identificadoresCitas[posicionCita] = "CITA-" + capacidadCreacionCitas;
+
+                                                                numerosCedulaClientesCitas[posicionCita] =
+                                                                        numerosCedulaClientes[posicionClienteSesion];
+
+                                                                numerosIdentificadoresBarberosCitas[posicionCita] =
+                                                                        numeroIdentificadorBarberoSeleccionado;
+
+                                                                serviciosCitas[posicionCita] = servicioIngresado;
+
+                                                                fechasCitas[posicionCita] = fechaCitaIngresada;
+
+                                                                horasCitas[posicionCita] = horaCitaIngresada;
+
+                                                                estadosCitas[posicionCita] = "Activa";
+
+                                                                System.out.println("¡Cita registrada exitosamente!");
+
+                                                                System.out.println("Identificador de tu cita: "
+                                                                        + identificadoresCitas[posicionCita]);
+                                                            }
+                                                        }
+                                                        break;
+                                                    case '2':
+
+                                                        System.out.println("\n===== MIS CITAS =====");
+
+                                                        boolean tieneCitas = false;
+
+                                                        for (int i = 0; i < identificadoresCitas.length; i++) {
+
+                                                            if (numerosCedulaClientesCitas[i].equals(
+                                                                    numerosCedulaClientes[posicionClienteSesion])) {
+
+                                                                tieneCitas = true;
+
+                                                                System.out.println("\nIdentificador: " + identificadoresCitas[i]);
+                                                                System.out.println("Servicio: " + serviciosCitas[i]);
+                                                                System.out.println("Barbero: " + numerosIdentificadoresBarberosCitas[i]);
+                                                                System.out.println("Fecha: " + fechasCitas[i]);
+                                                                System.out.println("Hora: " + horasCitas[i]);
+                                                                System.out.println("Estado: " + estadosCitas[i]);
+
+                                                            }
+                                                        }
+
+                                                        if (tieneCitas == false) {
+                                                            System.out.println("No tienes citas registradas.");
+                                                        }
+
+                                                        break;
+
+                                                    case '3':
+
+                                                        do {
+                                                            System.out.println("\n===== ACTUALIZAR CITA =====");
+                                                            System.out.println("Ingresa el identificador de la cita (0 para volver):");
+                                                            identificadorCitaIngresado = scanner.nextLine();
+
+                                                            if (identificadorCitaIngresado.equals("0")) {
+                                                                System.out.println("Volviendo al menu de gestion de citas.");
+                                                                break;
+                                                            }
+
+                                                            posicionCitaActualizar = -1;
+
+
+                                                            for (int i = 0; i < identificadoresCitas.length; i++) {
+
+                                                                if (identificadoresCitas[i].equals(identificadorCitaIngresado)
+                                                                        && numerosCedulaClientesCitas[i].equals(
+                                                                        numerosCedulaClientes[posicionClienteSesion])
+                                                                        && estadosCitas[i].equals("Activa")) {
+
+                                                                    posicionCitaActualizar = i;
+                                                                    break;
+                                                                }
+                                                            }
+
+                                                            if (posicionCitaActualizar == -1) {
+                                                                System.out.println("No se encontro una cita activa con ese identificador.");
+                                                            }
+
+                                                        } while (posicionCitaActualizar == -1
+                                                                && !identificadorCitaIngresado.equals("0"));
+
+                                                        if (posicionCitaActualizar != -1) {
+
+                                                            do {
+
+                                                                String nuevaFechaCita = fechasCitas[posicionCitaActualizar];
+                                                                String nuevaHoraCita = horasCitas[posicionCitaActualizar];
+
+                                                                System.out.println("\n===== ACTUALIZAR CITA =====");
+                                                                System.out.println("1. Cambiar fecha");
+                                                                System.out.println("2. Cambiar hora");
+                                                                System.out.println("3. Cambiar fecha y hora");
+                                                                System.out.println("4. Volver");
+                                                                System.out.println("Selecciona una opcion:");
+
+                                                                opcionActualizar = scanner.nextLine().charAt(0);
+
+                                                                switch (opcionActualizar) {
+
+                                                                    case '1':
+
+                                                                        do {
+                                                                            System.out.println("Ingresa la nueva fecha (DD/MM/AAAA):");
+                                                                            nuevaFechaCita = scanner.nextLine();
+
+                                                                            if (nuevaFechaCita.trim().isEmpty()) {
+                                                                                System.out.println("La fecha no puede estar vacia");
+                                                                            }
+
+                                                                        } while (nuevaFechaCita.trim().isEmpty());
+
+                                                                        break;
+
+                                                                    case '2':
+
+                                                                        do {
+                                                                            System.out.println("Ingresa la nueva hora (HH:MM):");
+                                                                            nuevaHoraCita = scanner.nextLine();
+
+                                                                            if (nuevaHoraCita.trim().isEmpty()) {
+                                                                                System.out.println("La hora no puede estar vacia");
+                                                                            }
+
+                                                                        } while (nuevaHoraCita.trim().isEmpty());
+
+                                                                        break;
+
+                                                                    case '3':
+
+                                                                        do {
+                                                                            System.out.println("Ingresa la nueva fecha (DD/MM/AAAA):");
+                                                                            nuevaFechaCita = scanner.nextLine();
+
+                                                                            if (nuevaFechaCita.trim().isEmpty()) {
+                                                                                System.out.println("La fecha no puede estar vacia");
+                                                                            }
+
+                                                                        } while (nuevaFechaCita.trim().isEmpty());
+
+                                                                        do {
+                                                                            System.out.println("Ingresa la nueva hora (HH:MM):");
+                                                                            nuevaHoraCita = scanner.nextLine();
+
+                                                                            if (nuevaHoraCita.trim().isEmpty()) {
+                                                                                System.out.println("La hora no puede estar vacia");
+                                                                            }
+
+                                                                        } while (nuevaHoraCita.trim().isEmpty());
+
+                                                                        break;
+
+                                                                    case '4':
+                                                                        System.out.println("Volviendo al menu de gestion de citas.");
+                                                                        break;
+
+                                                                    default:
+                                                                        System.out.println("Opcion no valida");
+                                                                        break;
+                                                                }
+
+                                                                if (opcionActualizar == '1'
+                                                                        || opcionActualizar == '2'
+                                                                        || opcionActualizar == '3') {
+
+
+                                                                    horarioOcupadoActualizar = false;
+                                                                    for (int i = 0; i < identificadoresCitas.length; i++) {
+
+                                                                        if (i != posicionCitaActualizar
+                                                                                && numerosIdentificadoresBarberosCitas[i].equals(
+                                                                                numerosIdentificadoresBarberosCitas[posicionCitaActualizar])
+                                                                                && fechasCitas[i].equals(nuevaFechaCita)
+                                                                                && horasCitas[i].equals(nuevaHoraCita)
+                                                                                && estadosCitas[i].equals("Activa")) {
+
+                                                                            horarioOcupadoActualizar = true;
+                                                                            break;
+                                                                        }
+                                                                    }
+
+                                                                    if (horarioOcupadoActualizar == true) {
+
+                                                                        System.out.println("El barbero ya tiene una cita en esa fecha y hora.");
+                                                                        System.out.println("No se realizaron los cambios.");
+
+                                                                    } else {
+
+                                                                        fechasCitas[posicionCitaActualizar] = nuevaFechaCita;
+                                                                        horasCitas[posicionCitaActualizar] = nuevaHoraCita;
+
+                                                                        System.out.println("Cita actualizada exitosamente.");
+                                                                    }
+                                                                }
+
+                                                            } while (opcionActualizar != '4');
+                                                        }
+                                                        break;
+
+                                                    case '4':
+                                                        do {
+                                                            System.out.println("\n===== CANCELAR CITA =====");
+                                                            System.out.println("Ingresa el identificador de la cita (0 para volver):");
+
+                                                            identificadorCitaIngresado = scanner.nextLine();
+
+                                                            if (identificadorCitaIngresado.equals("0")) {
+                                                                System.out.println("Volviendo al menu de gestion de citas.");
+                                                                break;
+                                                            }
+
+                                                            posicionCitaCancelar = -1;
+
+                                                            for (int i = 0; i < identificadoresCitas.length; i++) {
+
+                                                                if (identificadoresCitas[i].equals(identificadorCitaIngresado)
+                                                                        && numerosCedulaClientesCitas[i].equals(
+                                                                        numerosCedulaClientes[posicionClienteSesion])
+                                                                        && estadosCitas[i].equals("Activa")) {
+
+                                                                    posicionCitaCancelar = i;
+                                                                    break;
+                                                                }
+                                                            }
+
+                                                            if (posicionCitaCancelar == -1) {
+                                                                System.out.println("No se encontro una cita activa con ese identificador.");
+                                                            }
+
+                                                        } while (posicionCitaCancelar == -1
+                                                                && !identificadorCitaIngresado.equals("0"));
+
+                                                        if (posicionCitaCancelar != -1) {
+
+                                                            for (int i = posicionCitaCancelar; i < capacidadCreacionCitas - 1; i++) {
+
+                                                                identificadoresCitas[i] = identificadoresCitas[i + 1];
+
+                                                                numerosCedulaClientesCitas[i] = numerosCedulaClientesCitas[i + 1];
+
+                                                                numerosIdentificadoresBarberosCitas[i] =
+                                                                        numerosIdentificadoresBarberosCitas[i + 1];
+
+                                                                serviciosCitas[i] = serviciosCitas[i + 1];
+
+                                                                fechasCitas[i] = fechasCitas[i + 1];
+
+                                                                horasCitas[i] = horasCitas[i + 1];
+
+                                                                estadosCitas[i] = estadosCitas[i + 1];
+
+                                                            }
+
+
+                                                            capacidadCreacionCitas--;
+                                                            identificadoresCitas = java.util.Arrays.copyOf(
+                                                                    identificadoresCitas, capacidadCreacionCitas);
+
+                                                            numerosCedulaClientesCitas = java.util.Arrays.copyOf(
+                                                                    numerosCedulaClientesCitas, capacidadCreacionCitas);
+
+                                                            numerosIdentificadoresBarberosCitas = java.util.Arrays.copyOf(
+                                                                    numerosIdentificadoresBarberosCitas, capacidadCreacionCitas);
+
+                                                            serviciosCitas = java.util.Arrays.copyOf(
+                                                                    serviciosCitas, capacidadCreacionCitas);
+
+                                                            fechasCitas = java.util.Arrays.copyOf(
+                                                                    fechasCitas, capacidadCreacionCitas);
+
+                                                            horasCitas = java.util.Arrays.copyOf(
+                                                                    horasCitas, capacidadCreacionCitas);
+
+                                                            estadosCitas = java.util.Arrays.copyOf(
+                                                                    estadosCitas, capacidadCreacionCitas);
+
+                                                            System.out.println("¡Cita cancelada exitosamente!");
+                                                        }
+                                                        break;
+
+                                                    case '5':
+
+                                                        break;
+
+                                                    default:
+
+                                                        System.out.println("Opcion invalida");
+
+                                                        break;
+                                                }
+
+                                            } while (opcionGestionCitas != '5');
+                                            break;
+
+                                        case '3':
+
+                                            System.out.println("Cerrando sesion...");
+                                            break;
+
+                                        default:
+                                            System.out.println("Opcion no valida");
+                                            break;
+                                    }
+
+                                } while (opcionMenuCliente != '3');
                                 break;
                             case '2':
                                 do {
@@ -209,6 +831,7 @@ public class Main {
                                                     if (correosElectronicosBarbero[i].equals(correoElectronicoIngresado)
                                                             && contrasenasBarbero[i].equals(contrasenaIngresada)) {
                                                         inicioDeSeccion = false;
+                                                        posicionClienteSesion = i;
                                                         break;
                                                     }
                                                 }
@@ -222,7 +845,7 @@ public class Main {
                                         } while (contrasenaIngresada.trim().isEmpty());
                                     }
                                 } while (inicioDeSeccion != false);
-                                
+
                                 break;
                             case '2':
                                 do {
